@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expedición Sacambú — Amazonas Peruano</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde-oscuro: #0d1f0e;
+    --verde-selva: #1a3a1c;
+    --verde-musgo: #2d5a2e;
+    --verde-hoja: #4a8c3f;
+    --verde-lima: #7ab648;
+    --dorado: #c9a84c;
+    --dorado-claro: #e8c96a;
+    --ambar: #d4783a;
+    --agua: #2a6b7c;
+    --agua-clara: #4da8bb;
+    --crema: #f2ead8;
+    --crema-oscuro: #d4c8a8;
+    --rojo-pirana: #b5342a;
+    --texto: #e8e0cc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--verde-oscuro);
+    color: var(--texto);
+    font-family: 'Libre Baskerville', Georgia, serif;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* FONDO ANIMADO CON CAPAS */
+  .jungle-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .jungle-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 80%, rgba(45,90,46,0.4) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 80% 20%, rgba(13,31,14,0.8) 0%, transparent 60%),
+      radial-gradient(ellipse 80% 50% at 50% 100%, rgba(26,58,28,0.6) 0%, transparent 50%);
+  }
+
+  /* Partículas flotantes */
+  .particle {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: float linear infinite;
+    opacity: 0;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    5% { opacity: 1; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(-20px) rotate(720deg); opacity: 0; }
+  }
+
+  /* Ondas de agua */
+  .water-ripple {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(180deg, transparent 0%, rgba(42,107,124,0.15) 50%, rgba(42,107,124,0.3) 100%);
+    animation: waterWave 8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes waterWave {
+    0%, 100% { transform: scaleY(1) scaleX(1); }
+    50% { transform: scaleY(1.3) scaleX(1.02); }
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 60px,
+        rgba(74,140,63,0.03) 60px,
+        rgba(74,140,63,0.03) 61px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 60px,
+        rgba(74,140,63,0.03) 60px,
+        rgba(74,140,63,0.03) 61px
+      );
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--dorado-claro);
+    padding: 6px 18px;
+    border-radius: 30px;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    animation: fadeInDown 1s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(2.4rem, 7vw, 5.5rem);
+    line-height: 1.1;
+    background: linear-gradient(135deg, var(--dorado-claro) 0%, var(--dorado) 40%, var(--ambar) 70%, var(--dorado-claro) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    animation: fadeInUp 1.2s ease both 0.2s;
+    filter: drop-shadow(0 0 30px rgba(201,168,76,0.3));
+  }
+
+  .hero-subtitle {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: var(--crema-oscuro);
+    margin-top: 15px;
+    letter-spacing: 1px;
+    animation: fadeInUp 1.2s ease both 0.4s;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 30px;
+    margin-top: 35px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeInUp 1.2s ease both 0.6s;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .meta-icon { font-size: 1.6rem; }
+
+  .meta-label {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--verde-lima);
+  }
+
+  .meta-value {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.85rem;
+    color: var(--dorado-claro);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(201,168,76,0.5);
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(180deg, var(--dorado) 0%, transparent 100%);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollLine {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* SECCIONES */
+  .section {
+    position: relative;
+    z-index: 10;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px 24px;
+  }
+
+  .section-divider {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--verde-musgo) 20%, var(--dorado) 50%, var(--verde-musgo) 80%, transparent 100%);
+    margin: 0 auto 50px;
+    position: relative;
+  }
+
+  .section-divider::before {
+    content: '⬡';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--verde-oscuro);
+    padding: 0 12px;
+    color: var(--dorado);
+    font-size: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    color: var(--dorado-claro);
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--verde-musgo) 0%, transparent 100%);
+  }
+
+  /* CAMBIO DE MONEDA */
+  .currency-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .currency-card {
+    background: linear-gradient(135deg, rgba(45,90,46,0.3) 0%, rgba(26,58,28,0.5) 100%);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .currency-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(201,168,76,0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .currency-card:hover::before { opacity: 1; }
+  .currency-card:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-3px); }
+
+  .currency-flag { font-size: 2rem; margin-bottom: 8px; }
+  .currency-name { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--verde-lima); }
+  .currency-rate { font-family: 'Cinzel Decorative', serif; font-size: 1.3rem; color: var(--dorado-claro); margin: 6px 0; }
+  .currency-code { font-size: 0.75rem; color: var(--crema-oscuro); opacity: 0.7; }
+
+  .currency-note {
+    background: rgba(42,107,124,0.15);
+    border-left: 3px solid var(--agua-clara);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.85rem;
+    color: var(--crema-oscuro);
+    font-style: italic;
+  }
+
+  /* RUTA */
+  .route-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  .route-steps::before {
+    content: '';
+    position: absolute;
+    left: 28px;
+    top: 20px;
+    bottom: 20px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--dorado) 0%, var(--agua) 50%, var(--verde-hoja) 100%);
+  }
+
+  .route-step {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 16px 0;
+    animation: fadeIn 0.5s ease both;
+  }
+
+  .step-number {
+    width: 58px;
+    height: 58px;
+    min-width: 58px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--verde-selva), var(--verde-musgo));
+    border: 2px solid var(--dorado);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.1rem;
+    color: var(--dorado-claro);
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+  }
+
+  .step-content {
+    background: rgba(45,90,46,0.15);
+    border: 1px solid rgba(74,140,63,0.2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    flex: 1;
+    transition: all 0.3s ease;
+  }
+
+  .step-content:hover { background: rgba(45,90,46,0.25); border-color: rgba(201,168,76,0.25); }
+  .step-title { font-weight: 700; color: var(--dorado-claro); margin-bottom: 4px; font-size: 0.95rem; }
+  .step-desc { font-size: 0.85rem; color: var(--crema-oscuro); line-height: 1.6; }
+  .step-time { font-size: 0.7rem; color: var(--agua-clara); letter-spacing: 1px; margin-top: 6px; }
+
+  /* ITINERARIO TABS */
+  .day-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .day-tab {
+    padding: 10px 22px;
+    border-radius: 6px;
+    border: 1px solid rgba(201,168,76,0.3);
+    background: transparent;
+    color: var(--crema-oscuro);
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+  }
+
+  .day-tab:hover { border-color: var(--dorado); color: var(--dorado-claro); }
+
+  .day-tab.active {
+    background: linear-gradient(135deg, rgba(201,168,76,0.25), rgba(201,168,76,0.1));
+    border-color: var(--dorado);
+    color: var(--dorado-claro);
+    box-shadow: 0 0 20px rgba(201,168,76,0.15);
+  }
+
+  .day-content { display: none; }
+  .day-content.active { display: block; animation: fadeIn 0.4s ease; }
+
+  .timeline-item {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+
+  .timeline-time {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.7rem;
+    color: var(--ambar);
+    min-width: 80px;
+    padding-top: 3px;
+    letter-spacing: 0.5px;
+  }
+
+  .timeline-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--dorado);
+    margin-top: 6px;
+    flex-shrink: 0;
+    box-shadow: 0 0 8px rgba(201,168,76,0.5);
+  }
+
+  .timeline-body {
+    flex: 1;
+    background: rgba(26,58,28,0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
+    border-left: 3px solid var(--verde-musgo);
+    transition: border-color 0.3s;
+  }
+
+  .timeline-body:hover { border-left-color: var(--dorado); }
+
+  .timeline-activity {
+    font-weight: 700;
+    color: var(--crema);
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+
+  .timeline-desc {
+    font-size: 0.82rem;
+    color: var(--crema-oscuro);
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  .timeline-icon { float: right; font-size: 1.3rem; margin-left: 10px; }
+
+  /* PRESUPUESTO */
+  .budget-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+
+  .budget-table thead tr {
+    background: linear-gradient(90deg, rgba(201,168,76,0.2) 0%, rgba(201,168,76,0.05) 100%);
+  }
+
+  .budget-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: var(--dorado-claro);
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+  }
+
+  .budget-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(45,90,46,0.3);
+    color: var(--crema-oscuro);
+    vertical-align: middle;
+  }
+
+  .budget-table tr:hover td { background: rgba(45,90,46,0.15); }
+
+  .budget-table tr.total-row td {
+    background: linear-gradient(90deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05));
+    color: var(--dorado-claro);
+    font-weight: 700;
+    border-top: 2px solid rgba(201,168,76,0.4);
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.9rem;
+  }
+
+  .price-usd { color: var(--dorado-claro); font-weight: 700; }
+  .price-cop { color: var(--verde-lima); font-size: 0.8rem; }
+
+  /* SALUD */
+  .health-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .health-card {
+    background: linear-gradient(135deg, rgba(26,58,28,0.4), rgba(13,31,14,0.6));
+    border: 1px solid rgba(74,140,63,0.25);
+    border-radius: 12px;
+    padding: 22px 18px;
+    transition: all 0.3s;
+  }
+
+  .health-card:hover { transform: translateY(-4px); border-color: rgba(201,168,76,0.35); }
+
+  .health-icon { font-size: 2rem; margin-bottom: 10px; }
+
+  .health-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.8rem;
+    color: var(--dorado-claro);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .health-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .badge-obligatoria { background: rgba(181,52,42,0.3); color: #ff8a7a; border: 1px solid rgba(181,52,42,0.5); }
+  .badge-recomendada { background: rgba(212,120,58,0.3); color: #f0a870; border: 1px solid rgba(212,120,58,0.5); }
+  .badge-consultar { background: rgba(42,107,124,0.3); color: var(--agua-clara); border: 1px solid rgba(42,107,124,0.5); }
+  .badge-kit { background: rgba(74,140,63,0.3); color: var(--verde-lima); border: 1px solid rgba(74,140,63,0.5); }
+
+  .health-desc { font-size: 0.82rem; color: var(--crema-oscuro); line-height: 1.6; }
+
+  /* EQUIPAJE */
+  .gear-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .gear-category {
+    background: rgba(26,58,28,0.25);
+    border: 1px solid rgba(74,140,63,0.2);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .gear-category-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.8rem;
+    color: var(--dorado);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .gear-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(74,140,63,0.1);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .gear-item:last-child { border-bottom: none; }
+  .gear-item:hover .gear-check { border-color: var(--dorado); }
+
+  .gear-check {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 1.5px solid var(--verde-musgo);
+    background: transparent;
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: var(--dorado);
+  }
+
+  .gear-item.checked .gear-check {
+    background: rgba(201,168,76,0.2);
+    border-color: var(--dorado);
+  }
+
+  .gear-item.checked .gear-text { text-decoration: line-through; opacity: 0.5; }
+
+  .gear-text { font-size: 0.84rem; color: var(--crema-oscuro); line-height: 1.5; }
+
+  /* FAUNA */
+  .fauna-strip {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 10px 4px 16px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--verde-musgo) transparent;
+    margin-bottom: 20px;
+  }
+
+  .fauna-card {
+    min-width: 130px;
+    background: rgba(26,58,28,0.4);
+    border: 1px solid rgba(74,140,63,0.25);
+    border-radius: 10px;
+    padding: 16px 12px;
+    text-align: center;
+    flex-shrink: 0;
+    transition: all 0.3s;
+    cursor: default;
+  }
+
+  .fauna-card:hover { transform: scale(1.05); border-color: rgba(201,168,76,0.4); }
+
+  .fauna-emoji { font-size: 2.2rem; margin-bottom: 6px; }
+  .fauna-name { font-size: 0.72rem; color: var(--verde-lima); letter-spacing: 1px; text-transform: uppercase; line-height: 1.3; }
+
+  /* FOOTER */
+  .footer {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 50px 20px 40px;
+    border-top: 1px solid rgba(45,90,46,0.4);
+  }
+
+  .footer-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    color: var(--verde-hoja);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .footer-note {
+    font-style: italic;
+    color: var(--crema-oscuro);
+    opacity: 0.5;
+    font-size: 0.8rem;
+  }
+
+  /* ANIMACIONES */
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.9; }
+  }
+
+  /* Sticky nav */
+  .sticky-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(13,31,14,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transform: translateY(-100%);
+    transition: transform 0.4s ease;
+  }
+
+  .sticky-nav.visible { transform: translateY(0); }
+
+  .nav-brand {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.75rem;
+    color: var(--dorado);
+    letter-spacing: 2px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--crema-oscuro);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--dorado-claro); }
+
+  /* Decoración de hojas en corners */
+  .leaf-deco {
+    position: fixed;
+    pointer-events: none;
+    opacity: 0.06;
+    font-size: 120px;
+    z-index: 2;
+  }
+
+  .leaf-deco.tl { top: -20px; left: -20px; transform: rotate(-30deg); }
+  .leaf-deco.tr { top: -20px; right: -20px; transform: rotate(30deg) scaleX(-1); }
+
+  /* Tooltip especie */
+  .species-tooltip {
+    background: rgba(13,31,14,0.95);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    color: var(--crema);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 50;
+  }
+
+  .fauna-card:hover .species-tooltip { opacity: 1; }
+  .fauna-card { position: relative; }
+
+  /* Progress ring decorativo */
+  .deco-ring {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.05);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: rotateRing 30s linear infinite;
+  }
+
+  .deco-ring:nth-child(2) {
+    width: 400px; height: 400px;
+    border-color: rgba(74,140,63,0.05);
+    animation-direction: reverse;
+    animation-duration: 45s;
+  }
+
+  .deco-ring:nth-child(3) {
+    width: 500px; height: 500px;
+    border-color: rgba(42,107,124,0.04);
+    animation-duration: 60s;
+  }
+
+  @keyframes rotateRing {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  .intro-text {
+    font-family: 'IM Fell English', serif;
+    font-size: clamp(0.9rem, 2vw, 1.05rem);
+    line-height: 1.9;
+    color: var(--crema-oscuro);
+    max-width: 700px;
+    margin: 0 auto 40px;
+    text-align: center;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<!-- Fondo de partículas -->
+<div class="jungle-bg"></div>
+<div class="water-ripple"></div>
+<div class="leaf-deco tl">🌿</div>
+<div class="leaf-deco tr">🌿</div>
+
+<!-- NAV STICKY -->
+<nav class="sticky-nav" id="stickyNav">
+  <div class="nav-brand">✦ Sacambú</div>
+  <ul class="nav-links">
+    <li><a href="#ruta">Ruta</a></li>
+    <li><a href="#itinerario">Itinerario</a></li>
+    <li><a href="#presupuesto">Costos</a></li>
+    <li><a href="#salud">Salud</a></li>
+    <li><a href="#equipaje">Equipaje</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="deco-ring"></div>
+  <div class="deco-ring"></div>
+  <div class="deco-ring"></div>
+
+  <div class="badge">🌿 Expedición · 3 Días / 2 Noches · Grupo de 4</div>
+
+  <h1 class="hero-title">Sacambú</h1>
+  <p class="hero-subtitle">Bogotá → Leticia → Río Yavarí → Amazonas Peruano</p>
+
+  <div class="hero-meta">
+    <div class="meta-item">
+      <span class="meta-icon">🎣</span>
+      <span class="meta-label">Modalidad</span>
+      <span class="meta-value">Catch & Release</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-icon">🌞</span>
+      <span class="meta-label">Temporada</span>
+      <span class="meta-value">Vaciante</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-icon">🦁</span>
+      <span class="meta-label">Aventura</span>
+      <span class="meta-value">Selva Virgen</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-icon">💰</span>
+      <span class="meta-label">Costo Est.</span>
+      <span class="meta-value">~$450 USD</span>
+    </div>
+  </div>
+
+  <div class="scroll-hint" id="scrollHint">
+    <div class="scroll-line"></div>
+    <span>Explorar</span>
+  </div>
+</section>
+
+<!-- FAUNA VISTA PREVIA -->
+<section class="section">
+  <p class="intro-text">
+    "En el corazón del Río Yavarí, donde la frontera entre Perú y Brasil se disuelve en la espesura,
+    yace un lago que guarda los secretos de la selva primordial. Bienvenido a Sacambú."
+  </p>
+
+  <div class="fauna-strip">
+    <div class="fauna-card">
+      <div class="fauna-emoji">🐬</div>
+      <div class="fauna-name">Delfín Rosado</div>
+      <div class="species-tooltip">Inia geoffrensis</div>
+    </div>
+    <div class="fauna-card">
+      <div class="fauna-emoji">🐟</div>
+      <div class="fauna-name">Tucunaré (Peacock Bass)</div>
+      <div class="species-tooltip">Cichla ocellaris</div>
+    </div>
+    <div class="fauna-card">
+      <div class="fauna-emoji">🐊</div>
+      <div class="fauna-name">Caimán Negro</div>
+      <div class="species-tooltip">Melanosuchus niger</div>
+    </div>
+    <div class="fauna-card">
+      <div class="fauna-emoji">🦜</div>
+      <div class="fauna-name">Guacamayo</div>
+      <div class="species-tooltip">Ara macao</div>
+    </div>
+    <div class="fauna-card">
+      <div class="fauna-emoji">🐒</div>
+      <div class="fauna-name">Mono Fraile</div>
+      <div class="species-tooltip">Saimiri sciureus</div>
+    </div>
+    <div class="fauna-card">
+      <div class="fauna-emoji">🦥</div>
+      <div class="fauna-name">Perezoso</div>
+      <div class="species-tooltip">Bradypus variegatus</div>
+    </div>
+    <div class="fauna-card">
+      <div class="fauna-emoji">🕷️</div>
+      <div class="fauna-name">Tarántula</div>
+      <div class="species-tooltip">Theraphosidae spp.</div>
+    </div>
+    <div class="fauna-card">
+      <div class="fauna-emoji">🐦</div>
+      <div class="fauna-name">Martín Pescador</div>
+      <div class="species-tooltip">Ceryle torquata</div>
+    </div>
+  </div>
+</section>
+
+<!-- CAMBIO DE MONEDA -->
+<section class="section" id="moneda">
+  <div class="section-divider"></div>
+  <h2 class="section-title">💱 Referencia de Cambio</h2>
+
+  <div class="currency-grid">
+    <div class="currency-card">
+      <div class="currency-flag">🇺🇸</div>
+      <div class="currency-name">Dólar Americano</div>
+      <div class="currency-rate">1 USD</div>
+      <div class="currency-code">Base de referencia</div>
+    </div>
+    <div class="currency-card">
+      <div class="currency-flag">🇨🇴</div>
+      <div class="currency-name">Peso Colombiano</div>
+      <div class="currency-rate">≈ 3,800 COP</div>
+      <div class="currency-code">Por 1 USD</div>
+    </div>
+    <div class="currency-card">
+      <div class="currency-flag">🇧🇷</div>
+      <div class="currency-name">Real Brasileño</div>
+      <div class="currency-rate">≈ 5.26 BRL</div>
+      <div class="currency-code">Por 1 USD</div>
+    </div>
+    <div class="currency-card">
+      <div class="currency-flag">🇵🇪</div>
+      <div class="currency-name">Sol Peruano</div>
+      <div class="currency-rate">≈ 3.48 PEN</div>
+      <div class="currency-code">Por 1 USD</div>
+    </div>
+  </div>
+
+  <div class="currency-note">
+    💡 En Leticia y Tabatinga aceptan Pesos y Reales casi indistintamente. Al internarse
+    en el Yavarí (Perú), llevar <strong>Soles Peruanos o Dólares en efectivo</strong> es indispensable.
+  </div>
+</section>
+
+<!-- RUTA -->
+<section class="section" id="ruta">
+  <div class="section-divider"></div>
+  <h2 class="section-title">🗺️ Ruta de Llegada</h2>
+
+  <div class="route-steps">
+    <div class="route-step">
+      <div class="step-number">①</div>
+      <div class="step-content">
+        <div class="step-title">✈️ Bogotá (BOG) → Leticia (LET)</div>
+        <div class="step-desc">Vuelo directo de aprox. 2 horas con Avianca o LATAM. Tomar el primer vuelo de la mañana.</div>
+        <div class="step-time">⏱ ~2 horas de vuelo</div>
+      </div>
+    </div>
+    <div class="route-step">
+      <div class="step-number">②</div>
+      <div class="step-content">
+        <div class="step-title">🚕 Leticia → Puerto Tabatinga (Brasil)</div>
+        <div class="step-desc">Cruce en taxi hasta el puerto de Tabatinga. Frontera terrestre de fácil acceso.</div>
+        <div class="step-time">⏱ 15 minutos en taxi</div>
+      </div>
+    </div>
+    <div class="route-step">
+      <div class="step-number">③</div>
+      <div class="step-content">
+        <div class="step-title">🚤 Tabatinga → Islandia / Benjamin Constant</div>
+        <div class="step-desc">Bote rápido (lancha pública "expreso") por el río Amazonas hasta la desembocadura del Río Yavarí.</div>
+        <div class="step-time">⏱ 30-40 minutos en lancha</div>
+      </div>
+    </div>
+    <div class="route-step">
+      <div class="step-number">④</div>
+      <div class="step-content">
+        <div class="step-title">🌿 Río Yavarí → Sacambú</div>
+        <div class="step-desc">Remontando el Yavarí en "peque-peque" o lancha privada. La selva virgen se abre ante ustedes.</div>
+        <div class="step-time">⏱ 2-3 horas de navegación</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ITINERARIO -->
+<section class="section" id="itinerario">
+  <div class="section-divider"></div>
+  <h2 class="section-title">📅 Itinerario Detallado</h2>
+
+  <div class="day-tabs">
+    <button class="day-tab active" onclick="showDay('d1', this)">Día 1</button>
+    <button class="day-tab" onclick="showDay('d2', this)">Día 2</button>
+    <button class="day-tab" onclick="showDay('d3', this)">Día 3</button>
+  </div>
+
+  <!-- DÍA 1 -->
+  <div class="day-content active" id="d1">
+    <div style="background: linear-gradient(90deg, rgba(201,168,76,0.1), transparent); border-radius: 8px; padding: 12px 18px; margin-bottom: 20px;">
+      <span style="font-family: 'Cinzel Decorative', serif; font-size: 0.8rem; color: var(--dorado);">La Entrada a la Amazonía y los Misterios de la Noche</span>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">09:00 AM</div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-body">
+        <span class="timeline-icon">✈️</span>
+        <div class="timeline-activity">Llegada al Aeropuerto de Leticia</div>
+        <div class="timeline-desc">Pago del impuesto de turismo local en efectivo.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">10:00 AM</div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-body">
+        <span class="timeline-icon">🚤</span>
+        <div class="timeline-activity">Navegación — Gran Río Amazonas → Río Yavarí</div>
+        <div class="timeline-desc">Traslado al puerto y navegación épica. Box lunch servido en el bote.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">02:30 PM</div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-body">
+        <span class="timeline-icon">🏕️</span>
+        <div class="timeline-activity">Llegada al Lodge/Campamento Sacambú</div>
+        <div class="timeline-desc">Acomodación y reconocimiento del área base.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">04:00 PM</div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-body">
+        <span class="timeline-icon">🐬</span>
+        <div class="timeline-activity">Reconocimiento en Canoa — Lago Sacambú</div>
+        <div class="timeline-desc">Primera observación de monos frailes, perezosos, delfines rosados y grises que habitan la zona.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">07:00 PM</div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-body">
+        <span class="timeline-icon">🍽️</span>
+        <div class="timeline-activity">Cena en el Campamento</div>
+        <div class="timeline-desc">Cocina amazónica.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">08:30 PM</div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-body">
+        <span class="timeline-icon">🕷️</span>
+        <div class="timeline-activity">Caminata Nocturna</div>
+        <div class="timeline-desc">Con linternas y botas de caucho: tarántulas, ranas arborícolas, insectos gigantes y búhos nocturnos.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 2 -->
+  <div class="day-content" id="d2">
+    <div style="background: linear-gradient(90deg, rgba(201,168,76,0.1), transparent); border-radius: 8px; padding: 12px 18px; margin-bottom: 20px;">
+      <span style="font-family: 'Cinzel Decorative', serif; font-size: 0.8rem; color: var(--dorado);">Pesca Deportiva y Caimanes</span>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">06:00 AM</div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-body">
+        <span class="timeline-icon">☀️</span>
+        <div class="timeline-activity">Desayuno Temprano</div>
+        <div class="timeline-desc">Energía para la jornada de pesca.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">07:00 AM</div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-body">
+        <span class="timeline-icon">🎣</span>
+        <div class="timeline-activity">Pesca Deportiva — Parte I</div>
+        <div class="timeline-desc">Zonas del Yavarí y sus cochas (lagos) buscando el Tucunaré (Peacock Bass), Arawanas y pirañas. Catch & Release para los grandes trofeos.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">01:00 PM</div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-body">
+        <span class="timeline-icon">🍌</span>
+        <div class="timeline-activity">Almuerzo Amazónico</div>
+        <div class="timeline-desc">Pescado local, plátano y frutas de temporada.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">03:00 PM</div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-body">
+        <span class="timeline-icon">🪶</span>
+        <div class="timeline-activity">Interacción Cultural — Comunidad Yaguas / Tikunas</div>
+        <div class="timeline-desc">Métodos de pesca tradicional, caza con cerbatana y uso de plantas medicinales.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">08:00 PM</div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-body">
+        <span class="timeline-icon">🐊</span>
+        <div class="timeline-activity">Observación Nocturna de Caimanes</div>
+        <div class="timeline-desc">Canoa a motor y remo. El guía refleja los ojos rojos de caimanes negros y blancos con su linterna.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 3 -->
+  <div class="day-content" id="d3">
+    <div style="background: linear-gradient(90deg, rgba(201,168,76,0.1), transparent); border-radius: 8px; padding: 12px 18px; margin-bottom: 20px;">
+      <span style="font-family: 'Cinzel Decorative', serif; font-size: 0.8rem; color: var(--dorado);">Sinfonía de Aves y Retorno</span>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">05:30 AM</div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-body">
+        <span class="timeline-icon">🦜</span>
+        <div class="timeline-activity">Avistamiento de Aves al Amanecer</div>
+        <div class="timeline-desc">Navegación silenciosa para observar guacamayos, tucanes, martines pescadores y garzas al primer rayar del sol.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">08:00 AM</div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-body">
+        <span class="timeline-icon">☕</span>
+        <div class="timeline-activity">Desayuno en el Campamento</div>
+        <div class="timeline-desc">Última mañana en Sacambú.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">09:00 AM</div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-body">
+        <span class="timeline-icon">🎣</span>
+        <div class="timeline-activity">Última Jornada de Pesca / Baño en el Río</div>
+        <div class="timeline-desc">Pesca corta final o baño en zona segura del río.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">10:30 AM</div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-body">
+        <span class="timeline-icon">🎒</span>
+        <div class="timeline-activity">Empaque y Check-out</div>
+        <div class="timeline-desc">Guardar recuerdos, fotos y la experiencia de toda una vida.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">11:00 AM</div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-body">
+        <span class="timeline-icon">🚤</span>
+        <div class="timeline-activity">Viaje de Retorno → Leticia</div>
+        <div class="timeline-desc">Navegación de regreso por el Yavarí y el Amazonas.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">03:00 PM</div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-body">
+        <span class="timeline-icon">✈️</span>
+        <div class="timeline-activity">Aeropuerto de Leticia — Vuelo a Bogotá</div>
+        <div class="timeline-desc">Regreso a la civilización, con el corazón lleno de Amazonía.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRESUPUESTO -->
+<section class="section" id="presupuesto">
+  <div class="section-divider"></div>
+  <h2 class="section-title">💰 Presupuesto Estimado</h2>
+  <p style="font-size: 0.82rem; color: var(--crema-oscuro); margin-bottom: 20px; font-style: italic;">Por persona en grupo de 4 · Los costos de transporte y guía se dividen entre todos.</p>
+
+  <table class="budget-table">
+    <thead>
+      <tr>
+        <th>Concepto</th>
+        <th>USD</th>
+        <th>COP</th>
+        <th>Detalles</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>✈️ Vuelo BOG ↔ LET</td>
+        <td class="price-usd">$120 – $160</td>
+        <td class="price-cop">$450K – $600K</td>
+        <td style="font-size: 0.78rem; color: var(--crema-oscuro); opacity: 0.8;">Reservar 1-2 meses antes</td>
+      </tr>
+      <tr>
+        <td>🏛️ Impuesto Turístico Leticia</td>
+        <td class="price-usd">$10</td>
+        <td class="price-cop">$35K</td>
+        <td style="font-size: 0.78rem; color: var(--crema-oscuro); opacity: 0.8;">Efectivo al llegar</td>
+      </tr>
+      <tr>
+        <td>🌿 Tour Todo Incluido 3D/2N</td>
+        <td class="price-usd">$250 – $300</td>
+        <td class="price-cop">$950K – $1.14M</td>
+        <td style="font-size: 0.78rem; color: var(--crema-oscuro); opacity: 0.8;">Botes, guía, alojamiento, comidas, equipos</td>
+      </tr>
+      <tr>
+        <td>🛒 Gastos extra / Propinas</td>
+        <td class="price-usd">$30 – $50</td>
+        <td class="price-cop">$115K – $190K</td>
+        <td style="font-size: 0.78rem; color: var(--crema-oscuro); opacity: 0.8;">Artesanías, bebidas, propina guía</td>
+      </tr>
+      <tr class="total-row">
+        <td>⭐ TOTAL POR PERSONA</td>
+        <td>~$450 USD</td>
+        <td>~$1,700K COP</td>
+        <td style="font-size: 0.75rem; opacity: 0.8;">Desde tu puerta hasta la selva</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="currency-note" style="margin-top: 16px;">
+    💡 Si traen equipos de pesca propios (cañas, señuelos para Tucunaré), confírmenlo con el guía para descontar alquileres.
+  </div>
+</section>
+
+<!-- SALUD -->
+<section class="section" id="salud">
+  <div class="section-divider"></div>
+  <h2 class="section-title">💉 Salud y Vacunas</h2>
+
+  <div class="health-cards">
+    <div class="health-card">
+      <div class="health-icon">💛</div>
+      <div class="health-badge badge-obligatoria">Obligatoria</div>
+      <div class="health-title">Fiebre Amarilla</div>
+      <div class="health-desc">Aplicar mínimo 10 días antes del viaje. El carnet será solicitado en el aeropuerto de Bogotá o Leticia.</div>
+    </div>
+    <div class="health-card">
+      <div class="health-icon">🩸</div>
+      <div class="health-badge badge-recomendada">Recomendada</div>
+      <div class="health-title">Tétanos & Hepatitis A/B</div>
+      <div class="health-desc">Si el esquema de vacunación está desactualizado, es un buen momento para renovarlo antes del viaje.</div>
+    </div>
+    <div class="health-card">
+      <div class="health-icon">🦟</div>
+      <div class="health-badge badge-consultar">Consultar Médico</div>
+      <div class="health-title">Malaria / Paludismo</div>
+      <div class="health-desc">Al dormir cerca de lagos en selva profunda, consultar con médico sobre pastillas profilácticas.</div>
+    </div>
+    <div class="health-card">
+      <div class="health-icon">🧰</div>
+      <div class="health-badge badge-kit">Kit Básico</div>
+      <div class="health-title">Botiquín del Viajero</div>
+      <div class="health-desc">Antihistamínicos para picaduras, analgésicos, suero oral y medicina para malestar estomacal.</div>
+    </div>
+  </div>
+</section>
+
+<!-- EQUIPAJE -->
+<section class="section" id="equipaje">
+  <div class="section-divider"></div>
+  <h2 class="section-title">🎒 Equipaje Imprescindible</h2>
+  <p style="font-size: 0.82rem; color: var(--ambar); margin-bottom: 24px; font-style: italic;">
+    ⚠️ Máximo 10 kg en mochila — No maletas de ruedas. Calor intenso de día, noches frescas.
+  </p>
+
+  <div class="gear-grid" id="gearGrid">
+    <div class="gear-category">
+      <div class="gear-category-title">👕 Ropa</div>
+      <div class="gear-item" onclick="toggleGear(this)">
+        <div class="gear-check"></div>
+        <div class="gear-text">Camisas manga larga, secado rápido / protección UV</div>
+      </div>
+      <div class="gear-item" onclick="toggleGear(this)">
+        <div class="gear-check"></div>
+        <div class="gear-text">Pantalones largos (evitar colores oscuros, prefieran tonos tierra)</div>
+      </div>
+      <div class="gear-item" onclick="toggleGear(this)">
+        <div class="gear-check"></div>
+        <div class="gear-text">Zapatos de trekking ligeros y sandalias</div>
+      </div>
+      <div class="gear-item" onclick="toggleGear(this)">
+        <div class="gear-check"></div>
+        <div class="gear-text">Botas de caucho / pantano (consultar si las provee el lodge)</div>
+      </div>
+    </div>
+
+    <div class="gear-category">
+      <div class="gear-category-title">🛡️ Protección</div>
+      <div class="gear-item" onclick="toggleGear(this)">
+        <div class="gear-check"></div>
+        <div class="gear-text">Repelente de insectos mínimo 30% DEET</div>
+      </div>
+      <div class="gear-item" onclick="toggleGear(this)">
+        <div class="gear-check"></div>
+        <div class="gear-text">Protector solar ecológico</div>
+      </div>
+      <div class="gear-item" onclick="toggleGear(this)">
+        <div class="gear-check"></div>
+        <div class="gear-text">Gafas de sol polarizadas (para ver peces bajo el agua)</div>
+      </div>
+      <div class="gear-item" onclick="toggleGear(this)">
+        <div class="gear-check"></div>
+        <div class="gear-text">Sombrero de ala ancha</div>
+      </div>
+    </div>
+
+    <div class="gear-category">
+      <div class="gear-category-title">⚡ Tecnología</div>
+      <div class="gear-item" onclick="toggleGear(this)">
+        <div class="gear-check"></div>
+        <div class="gear-text">Linterna frontal (Headlamp) + baterías extra</div>
+      </div>
+      <div class="gear-item" onclick="toggleGear(this)">
+        <div class="gear-check"></div>
+        <div class="gear-text">Powerbank cargado (electricidad con generador y horarios)</div>
+      </div>
+      <div class="gear-item" onclick="toggleGear(this)">
+        <div class="gear-check"></div>
+        <div class="gear-text">Bolsas impermeables (Dry-bags) para celulares y cámaras</div>
+      </div>
+      <div class="gear-item" onclick="toggleGear(this)">
+        <div class="gear-check"></div>
+        <div class="gear-text">Cámara o GoPro resistente al agua</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-title">✦ Expedición Sacambú · Amazonas Peruano ✦</div>
+  <div class="footer-note">Aventura en la selva · Pesca deportiva sostenible · Catch & Release</div>
+  <div style="margin-top: 20px; font-size: 1.5rem; opacity: 0.3;">🌿 🐬 🎣 🌿</div>
+</div>
+
+<!-- PARTÍCULAS JS -->
+<script>
+  // Generar partículas
+  for (let i = 0; i < 25; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 4 + 1;
+    p.style.cssText = `
+      width: ${size}px; height: ${size}px;
+      left: ${Math.random() * 100}%;
+      background: ${Math.random() > 0.6 ? 'rgba(201,168,76,0.6)' : 'rgba(74,140,63,0.5)'};
+      animation-duration: ${Math.random() * 15 + 10}s;
+      animation-delay: ${Math.random() * 15}s;
+    `;
+    document.body.appendChild(p);
+  }
+
+  // Sticky nav
+  const hero = document.querySelector('.hero');
+  const nav = document.getElementById('stickyNav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > hero.offsetHeight * 0.6) {
+      nav.classList.add('visible');
+    } else {
+      nav.classList.remove('visible');
+    }
+  });
+
+  // Day tabs
+  function showDay(id, btn) {
+    document.querySelectorAll('.day-content').forEach(d => d.classList.remove('active'));
+    document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // Gear toggle
+  function toggleGear(el) {
+    el.classList.toggle('checked');
+    const check = el.querySelector('.gear-check');
+    check.textContent = el.classList.contains('checked') ? '✓' : '';
+  }
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>
